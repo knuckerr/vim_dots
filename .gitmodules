@@ -46,3 +46,9 @@
 [submodule "pack/knucker/start/vim-prettier"]
 	path = pack/knucker/start/vim-prettier
 	url = https://github.com/prettier/vim-prettier.git
+[submodule "pack/knucker/start/pack/knucker/start/vim-fugitive"]
+	path = pack/knucker/start/pack/knucker/start/vim-fugitive
+	url = https://github.com/tpope/vim-fugitive
+[submodule "pack/knucker/start/vim-fugitive"]
+	path = pack/knucker/start/vim-fugitive
+	url = https://github.com/tpope/vim-fugitive
