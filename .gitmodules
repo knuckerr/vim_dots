@@ -1,0 +1,48 @@
+[submodule "pack/knucker/start/dracula"]
+	path = pack/knucker/start/dracula
+	url = git@github.com:dracula/vim.git
+[submodule "pack/knucker/start/auto-pairs"]
+	path = pack/knucker/start/auto-pairs
+	url = git://github.com/jiangmiao/auto-pairs.git
+[submodule "pack/knucker/start/nerdtree"]
+	path = pack/knucker/start/nerdtree
+	url = https://github.com/scrooloose/nerdtree
+[submodule "pack/knucker/start/vim-airline"]
+	path = pack/knucker/start/vim-airline
+	url = https://github.com/vim-airline/vim-airline
+[submodule "pack/knucker/start/vim-gitgutter"]
+	path = pack/knucker/start/vim-gitgutter
+	url = https://github.com/airblade/vim-gitgutter
+[submodule "pack/knucker/start/vim-repeat"]
+	path = pack/knucker/start/vim-repeat
+	url = https://github.com/tpope/vim-repeat
+[submodule "pack/knucker/start/fzf"]
+	path = pack/knucker/start/fzf
+	url = https://github.com/junegunn/fzf
+[submodule "pack/knucker/start/vim-easymotion"]
+	path = pack/knucker/start/vim-easymotion
+	url = https://github.com/easymotion/vim-easymotion
+[submodule "pack/knucker/start/surround"]
+	path = pack/knucker/start/surround
+	url = https://github.com/tpope/vim-surround
+[submodule "pack/knucker/start/vim-multiple-cursors"]
+	path = pack/knucker/start/vim-multiple-cursors
+	url = https://github.com/terryma/vim-multiple-cursors
+[submodule "pack/knucker/start/vim-indent-guides"]
+	path = pack/knucker/start/vim-indent-guides
+	url = https://github.com/nathanaelkane/vim-indent-guides
+[submodule "pack/knucker/start/vim-snippets"]
+	path = pack/knucker/start/vim-snippets
+	url = https://github.com/honza/vim-snippets
+[submodule "pack/knucker/start/rust.vim"]
+	path = pack/knucker/start/rust.vim
+	url = https://github.com/rust-lang/rust.vim.git
+[submodule "pack/knucker/start/vim-go"]
+	path = pack/knucker/start/vim-go
+	url = https://github.com/fatih/vim-go.git
+[submodule "pack/knucker/start/vim-javascript"]
+	path = pack/knucker/start/vim-javascript
+	url = https://github.com/pangloss/vim-javascript.git
+[submodule "pack/knucker/start/vim-prettier"]
+	path = pack/knucker/start/vim-prettier
+	url = https://github.com/prettier/vim-prettier.git
