@@ -1,6 +1,13 @@
 packadd! dracula
 colorscheme dracula
 
+" Persistent undo
+try
+    set undodir=undodir
+    set undofile
+catch
+endtry
+
 " Sets how many lines of history VIM has to remember
 set history=500
 
