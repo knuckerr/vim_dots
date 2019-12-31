@@ -8,6 +8,9 @@ try
 catch
 endtry
 
+set number
+set relativenumber
+
 " Sets how many lines of history VIM has to remember
 set history=500
 
@@ -154,8 +157,8 @@ set expandtab
 set smarttab
 
 " 1 tab == 4 spaces
-set shiftwidth=4
-set tabstop=4
+set shiftwidth=3
+set tabstop=3
 
 " Linebreak on 500 characters
 set lbr
