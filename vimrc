@@ -2,11 +2,8 @@ packadd! dracula
 colorscheme dracula
 
 " Persistent undo
-try
-    set undodir=undodir
-    set undofile
-catch
-endtry
+set undodir=./undodir
+set undofile
 
 set number
 set relativenumber
