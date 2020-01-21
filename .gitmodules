@@ -49,3 +49,6 @@
 [submodule "pack/knucker/start/fzf"]
 	path = pack/knucker/start/fzf
 	url = https://github.com/junegunn/fzf
+[submodule "pack/knucker/start/fzf.vim"]
+	path = pack/knucker/start/fzf.vim
+	url = https://github.com/junegunn/fzf.vim.git
