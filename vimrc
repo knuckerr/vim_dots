@@ -5,6 +5,7 @@ colorscheme dracula
 set undodir=./undodir
 set undofile
 
+set t_Co=256
 set number
 set relativenumber
 
@@ -154,8 +155,8 @@ set expandtab
 set smarttab
 
 " 1 tab == 4 spaces
-set shiftwidth=3
-set tabstop=3
+set shiftwidth=1
+set tabstop=1
 
 " Linebreak on 500 characters
 set lbr
