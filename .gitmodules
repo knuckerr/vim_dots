@@ -52,3 +52,6 @@
 [submodule "pack/knucker/start/fzf.vim"]
 	path = pack/knucker/start/fzf.vim
 	url = https://github.com/junegunn/fzf.vim.git
+[submodule "pack/knucker/start/commentary"]
+	path = pack/knucker/start/commentary
+	url = https://tpope.io/vim/commentary.git
