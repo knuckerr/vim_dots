@@ -2,7 +2,7 @@ packadd! dracula
 colorscheme dracula
 
 " Persistent undo
-set undodir=./undodir
+set undodir=$HOME/.vim/undodir
 set undofile
 
 set t_Co=256
