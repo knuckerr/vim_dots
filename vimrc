@@ -9,6 +9,8 @@ set t_Co=256
 set number
 set relativenumber
 
+set tags=tags
+
 " Sets how many lines of history VIM has to remember
 set history=500
 
