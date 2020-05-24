@@ -5,6 +5,8 @@ colorscheme dracula
 set undodir=$HOME/.vim/undodir
 set undofile
 
+autocmd FileType python nnoremap <leader>y :0,$!yapf<Cr><C-o>
+
 set t_Co=256
 set number
 set relativenumber

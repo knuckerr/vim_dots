@@ -69,7 +69,7 @@
         "filetypes": {
           "type": "array",
           "default": [],
-          "description": "Supported filetypes, use empty array for all filetypes.",
+          "description": "Supported filetypes, add * in array for all filetypes.",
           "items": {
             "type": "string"
           }
@@ -87,6 +87,11 @@
           "default": "never",
           "description": "Configure message level to show the output channel buffer",
           "enum": ["info", "warn", "error", "never"]
+        },
+        "progressOnInitialization": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable progress report on languageserver initialize."
         },
         "initializationOptions": {
           "type": "object",
@@ -132,6 +137,7 @@
         "filetypes": {},
         "additionalSchemes": {},
         "revealOutputChannelOn": {},
+        "progressOnInitialization": {},
         "initializationOptions": {},
         "settings": {},
         "stdioEncoding": {},
@@ -193,6 +199,7 @@
         "filetypes": {},
         "additionalSchemes": {},
         "revealOutputChannelOn": {},
+        "progressOnInitialization": {},
         "initializationOptions": {},
         "stdioEncoding": {},
         "settings": {},
@@ -241,6 +248,7 @@
         "filetypes": {},
         "additionalSchemes": {},
         "revealOutputChannelOn": {},
+        "progressOnInitialization": {},
         "initializationOptions": {},
         "stdioEncoding": {},
         "settings": {},
@@ -256,10 +264,7 @@
     },
     "http.proxyStrictSSL": {
       "type": "boolean",
-      "default": true
-    },
-    "https.rejectUnauthorized": {
-      "type": "boolean",
+      "description": "Controls whether the proxy server certificate should be verified against the list of supplied CAs",
       "default": true
     },
     "npm.binPath": {
@@ -270,7 +275,7 @@
     "suggest.enablePreselect": {
       "type": "boolean",
       "description": "Enable preselect feature, only works on neovim",
-      "default": true
+      "default": false
     },
     "suggest.maxPreviewWidth": {
       "type": "number",
@@ -368,7 +373,7 @@
       "type": "integer",
       "default": 5000,
       "minimum": 500,
-      "maximum": 5000,
+      "maximum": 15000,
       "description": "Timeout for completion, in miliseconds."
     },
     "suggest.minTriggerInputLength": {
@@ -498,12 +503,7 @@
     "diagnostic.messageDelay": {
       "type": "number",
       "description": "How long to wait (in milliseconds) before displaying the diagnostic message with echo or float",
-      "default": 250
-    },
-    "diagnostic.joinMessageLines": {
-      "type": "boolean",
-      "description": "Join lines messages to reduce lines of floating window.",
-      "default": false
+      "default": 200
     },
     "diagnostic.refreshOnInsertMode": {
       "type": "boolean",
@@ -524,6 +524,11 @@
       "type": "boolean",
       "description": "Use NeoVim virtual text to display diagnostics",
       "default": false
+    },
+    "diagnostic.virtualTextCurrentLineOnly": {
+      "type": "boolean",
+      "description": "Only show virtualText diagnostic on current cursor line",
+      "default": true
     },
     "diagnostic.virtualTextPrefix": {
       "type": "string",
@@ -548,12 +553,12 @@
     "diagnostic.enableHighlightLineNumber": {
       "type": "boolean",
       "default": true,
-      "description": "Enable highlighting line numbers for diagnostics."
+      "description": "Enable highlighting line numbers for diagnostics, only works with neovim and diagnostic.enableSign is true."
     },
     "diagnostic.enableMessage": {
       "type": "string",
       "default": "always",
-      "description": "When to enable echo messages of diagnostics.",
+      "description": "When to enable show messages of diagnostics.",
       "enum": ["always", "jump", "never"]
     },
     "diagnostic.locationlist": {
@@ -603,13 +608,18 @@
     },
     "diagnostic.filetypeMap": {
       "type": "object",
-      "description": "A map between buffer filetype and the filetype assigned to diagnostics. To syntax highlight diagnostics withs their parent buffer type use '\"default\": \"bufferType\"'",
+      "description": "A map between buffer filetype and the filetype assigned to diagnostics. To syntax highlight diagnostics withs their parent buffer type use `\"default\": \"bufferType\"`",
       "default": {}
     },
     "diagnostic.format": {
       "type": "string",
       "description": "Define the diagnostic format. Available parts: source, code, severity, message",
       "default": "[%source%code] [%severity] %message"
+    },
+    "diagnostic.separateRelatedInformationAsDiagnostics": {
+      "type": "boolean",
+      "default": false,
+      "description": "Separate related information as diagnostics"
     },
     "signature.enable": {
       "type": "boolean",
@@ -756,6 +766,14 @@
       "default": {},
       "description": "Custom keymappings on insert mode."
     },
+    "list.source.symbols.excludes": {
+      "type": "array",
+      "default": [],
+      "description": "Patterns of mimimatch for filepath to execlude from symbols list.",
+      "items": {
+        "type": "string"
+      }
+    },
     "list.source.outline.ctagsFilestypes": {
       "type": "array",
       "default": [],
@@ -778,6 +796,22 @@
       "type": "string",
       "default": "<C-p>",
       "description": "Key used for jump to previous cursors position."
+    },
+    "coc.preferences.maxFileSize": {
+      "type": "string",
+      "default": "10MB",
+      "description": "Maximum file size in bytes that coc.nvim should handle, default '10MB'"
+    },
+    "coc.preferences.promptWorkspaceEdit": {
+      "type": "boolean",
+      "description": "Prompt confirm from user when apply workspace edit for unloaded files.",
+      "default": true
+    },
+    "coc.preferences.listOfWorkspaceEdit": {
+      "type": "string",
+      "default": "quickfix",
+      "description": "List should contains changed locations after workspace edit, default to vim's quickfix",
+      "enum": ["quickfix", "location", "none"]
     },
     "coc.preferences.useQuickfixForLocations": {
       "type": "boolean",
