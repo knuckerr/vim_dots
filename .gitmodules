@@ -64,3 +64,6 @@
 [submodule "pack/knucker/start/vimwiki"]
 	path = pack/knucker/start/vimwiki
 	url = https://github.com/vimwiki/vimwiki.git
+[submodule "pack/knucker/start/markdown_preview"]
+	path = pack/knucker/start/markdown_preview
+	url = https://github.com/iamcco/markdown-preview.nvim.git
