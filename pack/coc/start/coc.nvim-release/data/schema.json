@@ -1,5 +1,5 @@
 {
-  "$schema": "http://json-schema.org/draft-06/schema",
+  "$schema": "http://json-schema.org/draft-07/schema#",
   "description": "Configuration file for coc.nvim",
   "additionalProperties": false,
   "definitions": {
@@ -25,6 +25,11 @@
           "default": false,
           "description": "Disable workspaceFolders feature for this languageserver."
         },
+        "disableSnippetCompletion": {
+          "type": "boolean",
+          "default": false,
+          "description": "Disable completion snippet feature for this languageserver, the languageserver may not respect it."
+        },
         "disableDiagnostics": {
           "type": "boolean",
           "default": false,
@@ -34,6 +39,11 @@
           "type": "boolean",
           "default": false,
           "description": "Disable completion feature for this languageserver."
+        },
+        "formatterPriority": {
+          "type": "number",
+          "default": 0,
+          "description": "Priority of this languageserver's fomatter."
         },
         "env": {
           "type": "object",
@@ -127,9 +137,11 @@
           "description": "Host of server"
         },
         "disableWorkspaceFolders": {},
+        "disableSnippetCompletion": {},
         "disableDynamicRegister": {},
         "disableDiagnostics": {},
         "disableCompletion": {},
+        "formatterPriority": {},
         "enable": {},
         "rootPatterns": {},
         "requireRootPattern": {},
@@ -191,8 +203,10 @@
         "enable": {},
         "disableDynamicRegister": {},
         "disableWorkspaceFolders": {},
+        "disableSnippetCompletion": {},
         "disableDiagnostics": {},
         "disableCompletion": {},
+        "formatterPriority": {},
         "rootPatterns": {},
         "requireRootPattern": {},
         "ignoredRootPaths": {},
@@ -240,8 +254,10 @@
         "enable": {},
         "disableDynamicRegister": {},
         "disableWorkspaceFolders": {},
+        "disableSnippetCompletion": {},
         "disableDiagnostics": {},
         "disableCompletion": {},
+        "formatterPriority": {},
         "rootPatterns": {},
         "requireRootPattern": {},
         "ignoredRootPaths": {},
@@ -260,12 +276,23 @@
     "http.proxy": {
       "type": "string",
       "default": "",
-      "description": "http proxy uri, used for extensions that send request. Format: proxy-server:1234 or user:password@prox-server:1234 with auth support"
+      "pattern": "^https?://([^:]*(:[^@]*)?@)?([^:]+|\\[[:0-9a-fA-F]+\\])(:\\d+)?/?$|^$",
+      "description": "The proxy setting to use. If not set, will be inherited from the `http_proxy` and `https_proxy` environment variables."
     },
     "http.proxyStrictSSL": {
       "type": "boolean",
       "description": "Controls whether the proxy server certificate should be verified against the list of supplied CAs",
       "default": true
+    },
+    "http.proxyAuthorization": {
+      "type": ["null", "string"],
+      "description": "The value to send as the `Proxy-Authorization` header for every network request.",
+      "default": null
+    },
+    "http.proxyCA": {
+      "type": "string",
+      "description": "CA (file) to use as Certificate Authority",
+      "default": null
     },
     "npm.binPath": {
       "type": "string",
@@ -274,7 +301,7 @@
     },
     "suggest.enablePreselect": {
       "type": "boolean",
-      "description": "Enable preselect feature, only works on neovim",
+      "description": "Enable preselect feature of LSP, only works on neovim",
       "default": false
     },
     "suggest.maxPreviewWidth": {
@@ -321,7 +348,7 @@
     },
     "suggest.numberSelect": {
       "type": "boolean",
-      "description": "Input number to select complete item, it could wrong when using <up> and <down> to select complete item",
+      "description": "Input number to select complete item, works on neovim >= 0.4.3 only.",
       "default": false
     },
     "suggest.disableKind": {
@@ -383,10 +410,10 @@
     },
     "suggest.triggerCompletionWait": {
       "type": "integer",
-      "default": 60,
-      "minimum": 50,
-      "maximum": 300,
-      "description": "Wait time between trigger character type and completion start, for wait server content synchronize."
+      "default": 50,
+      "minimum": 30,
+      "maximum": 500,
+      "description": "Wait time between text change and completion start, cancel completion when text changed during wait."
     },
     "suggest.echodocSupport": {
       "type": "boolean",
@@ -489,6 +516,11 @@
       "default": "hint",
       "enum": ["hint", "information", "warning", "error"]
     },
+    "diagnostic.locationlistUpdate": {
+      "type": "boolean",
+      "description": "Update locationlist on diagnostics change, only works with locationlist opened by :CocDiagnostics command and first window of associated buffer.",
+      "default": true
+    },
     "diagnostic.checkCurrentLine": {
       "type": "boolean",
       "description": "When enabled, show all diagnostics of current line if there are none at the current position.",
@@ -561,11 +593,6 @@
       "description": "When to enable show messages of diagnostics.",
       "enum": ["always", "jump", "never"]
     },
-    "diagnostic.locationlist": {
-      "type": "boolean",
-      "description": "Create location list for error & warning",
-      "default": true
-    },
     "diagnostic.highlightOffset": {
       "type": "number",
       "description": "Offset number of buffer.addHighlight, neovim only.",
@@ -621,6 +648,16 @@
       "default": false,
       "description": "Separate related information as diagnostics"
     },
+    "diagnostic.showUnused": {
+      "type": "boolean",
+      "default": true,
+      "description": "Show unused variables"
+    },
+    "diagnostic.showDeprecated": {
+      "type": "boolean",
+      "default": true,
+      "description": "Show deprecated variables"
+    },
     "signature.enable": {
       "type": "boolean",
       "description": "Enable signature help when trigger character typed, require restart service on change.",
@@ -636,12 +673,18 @@
     "signature.target": {
       "type": "string",
       "description": "Target of signature help, use float when possible by default.",
-      "enum": ["float", "echo"]
+      "enum": ["float", "echo", "preview"]
     },
-    "signature.floatMaxWidth": {
+    "signature.maxWindowWidth": {
       "type": "integer",
-      "default": 60,
-      "description": "Max width of signature float window."
+      "default": 80,
+      "description": "Maximum width of signature float window (or popup on vim8)."
+    },
+    "signature.maxWindowHeight": {
+      "type": "number",
+      "description": "Maximum height of signature float window (or popup on vim8).",
+      "minimum": 3,
+      "default": 8
     },
     "signature.preferShownAbove": {
       "type": "boolean",
@@ -653,11 +696,6 @@
       "description": "Hide signature float window when text changed, require restart service on change.",
       "default": false
     },
-    "signature.maxWindowHeight": {
-      "type": "number",
-      "description": "Maximum height of floating signature help window.",
-      "default": 8
-    },
     "codeLens.enable": {
       "type": "boolean",
       "description": "Enable codeLens feature, require neovim with set virtual text feature.",
@@ -667,6 +705,11 @@
       "type": "string",
       "description": "Separator text for codeLens in virtual text",
       "default": "‣"
+    },
+    "codeLens.subseparator": {
+      "type": "string",
+      "description": "Subseparator between codeLenses in virtual text",
+      "default": " "
     },
     "refactor.openCommand": {
       "type": "string",
@@ -694,17 +737,32 @@
     "list.indicator": {
       "type": "string",
       "default": ">",
-      "description": "The characer used as first characer in prompt line"
+      "description": "The character used as first character in prompt line"
     },
     "list.interactiveDebounceTime": {
       "type": "number",
       "default": 100,
       "description": "Debouce time for input change on interactive mode."
     },
-    "list.maxHeight": {
+    "list.height": {
       "type": "number",
       "default": 10,
-      "description": "Maximum height of list window."
+      "description": "Height of split list window."
+    },
+    "list.statusLineSegments": {
+      "type": ["array", "null"],
+      "default": [
+        "%#CocListMode#-- %{get(b:list_status, \"mode\", \"\")} --%*",
+        "%{get(b:list_status, \"loading\", \"\")}",
+        "%{get(b:list_status, \"args\", \"\")}",
+        "(%L/%{get(b:list_status, \"total\", \"\")})",
+        "%=",
+        "%#CocListPath# %{get(b:list_status, \"cwd\", \"\")} %l/%L%*"
+      ],
+      "items": {
+        "types": "string"
+      },
+      "description": "An array of statusline segments that will be used to draw the status line for list windows."
     },
     "list.signOffset": {
       "type": "number",
@@ -720,11 +778,6 @@
       "type": "boolean",
       "default": true,
       "description": "Enable extended search mode which allows multiple search patterns delimited by spaces."
-    },
-    "list.autoResize": {
-      "type": "boolean",
-      "default": true,
-      "description": "Enable auto resize feature."
     },
     "list.limitLines": {
       "type": "number",
@@ -820,7 +873,7 @@
     },
     "coc.preferences.extensionUpdateCheck": {
       "type": "string",
-      "default": "daily",
+      "default": "never",
       "description": "Interval for check extension update, could be daily, weekly, never",
       "enum": ["daily", "weekly", "never"]
     },
@@ -843,6 +896,11 @@
       "type": "boolean",
       "description": "Auto close preview window on cursor move.",
       "default": true
+    },
+    "coc.preferences.previewMaxHeight": {
+      "type": "number",
+      "default": 12,
+      "description": "Max height of preview window for hover."
     },
     "coc.preferences.currentFunctionSymbolAutoUpdate": {
       "type": "boolean",
@@ -883,6 +941,7 @@
     "coc.preferences.jumpCommand": {
       "type": "string",
       "description": "Command used for location jump, like goto definition, goto references etc.",
+      "enum": ["edit", "split", "vsplit", "tabe", "drop", "tab drop"],
       "default": "edit"
     },
     "coc.preferences.messageLevel": {
@@ -919,6 +978,26 @@
     "coc.preferences.snippets.enable": {
       "type": "boolean",
       "description": "Set to false to disable snippets support.",
+      "default": true
+    },
+    "coc.preferences.floatActions": {
+      "type": "boolean",
+      "description": "Set to false to disable float/popup support for actions menu, won't work on vim without float or popup window support.",
+      "default": true
+    },
+    "coc.preferences.promptInput": {
+      "type": "boolean",
+      "description": "Use prompt buffer in float window for user input, works on neovim >= 0.4.3 only.",
+      "default": true
+    },
+    "coc.preferences.enableMarkdown": {
+      "type": "boolean",
+      "description": "Tell the language server that markdown text format is supported, note that markdown text may not rendered as expected.",
+      "default": true
+    },
+    "coc.preferences.silentAutoupdate": {
+      "type": "boolean",
+      "description": "Not open split window with update status when performing auto update.",
       "default": true
     },
     "coc.source.around.enable": {
