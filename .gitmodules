@@ -67,3 +67,6 @@
 [submodule "pack/knucker/start/markdown_preview"]
 	path = pack/knucker/start/markdown_preview
 	url = https://github.com/iamcco/markdown-preview.nvim.git
+[submodule "pack/knucker/start/wal"]
+	path = pack/knucker/start/wal
+	url = git@github.com:dylanaraps/wal.vim.git
